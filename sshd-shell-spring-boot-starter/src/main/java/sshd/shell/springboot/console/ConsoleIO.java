@@ -23,6 +23,7 @@ import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
 import sshd.shell.springboot.autoconfiguration.SshSessionContext;
 import sshd.shell.springboot.util.JsonUtils;
+import sshd.shell.springboot.util.table.ShellTable;
 
 /**
  *
@@ -97,7 +98,10 @@ public enum ConsoleIO {
         terminal.writer().println(builder.style(AttributedStyle.DEFAULT).toAnsi(terminal));
         terminal.flush();
     }
-
+    public static void writeOutput(ShellTable aInShellTable) throws IOException {
+        Terminal terminal = SshSessionContext.<Terminal>get(TERMINAL);
+        aInShellTable.print(terminal.writer());
+    }
     private static void addHighlightedTextToBuilder(String output, String textToHighlight,
             AttributedStringBuilder builder) {
         String[] split = output.split(textToHighlight);
